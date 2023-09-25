@@ -10,15 +10,13 @@ jobs:
     steps:
       - name: Check Out Repository
         uses: actions/checkout@v2
-      - name: Install Brew
-        run: |
-           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      - name: Install swagger codegen
-        run: |
-          brew install swagger-codegen
       - name: Convert YAML to JSON
-        run: |
+        run: 
+          sh '''#!/bin/bash 
+          curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+          brew install swagger-codegen
           swagger-codegen generate -i test-api.yaml -l test-api-swagger
+          '''
       # Commit the updated Swagger JSON file back to the repository
       - name: Commit JSON File
         run: |
