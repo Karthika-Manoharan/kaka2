@@ -1,0 +1,23 @@
+name: Convert YAML to Swagger JSON
+on:
+  push:
+    paths:
+      - 'test-api.yaml'
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Out Repository
+        uses: actions/checkout@v2
+      - name: Convert YAML to JSON
+        run: |
+          docker run --rm -v $(pwd):/data -it swaggerapi/swagger-cli bundle test-api.yaml -o swagger-json/test-api-swagger.json
+      # Commit the updated Swagger JSON file back to the repository
+      - name: Commit JSON File
+        run: |
+          git config --global user.name 'Karthika-Manoharan'
+          git config --global user.email 'karthika.manoharan@freshworks.com'
+          git add test-api-swagger.json
+          git commit -m "Auto-generated Swagger JSON For Test Api"
+          git push
