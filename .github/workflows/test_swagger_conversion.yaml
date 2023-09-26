@@ -11,8 +11,6 @@ jobs:
       contents: write  # To push a branch 
       pull-requests: write  # To create a PR from that branch
     steps:
-      - name: Check Out Repository
-        uses: actions/checkout@v2
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
