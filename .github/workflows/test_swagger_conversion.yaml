@@ -10,20 +10,23 @@ jobs:
     steps:
       - name: Check Out Repository
         uses: actions/checkout@v2
-      - name: Install Brew
-        run: |
-           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      - name: Install swagger codegen
-        run: |
-          brew install swagger-codegen
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  # Choose the desired Node.js version
+
+      - name: Install swagger-cli
+        run: npm install -g swagger-cli
+
       - name: Convert YAML to JSON
         run: |
-          swagger-codegen generate -i test-api.yaml -l test-api-swagger
+          # Replace 'path/to/your/swagger.yaml' and 'path/to/output/swagger.json' with your file paths
+          swagger-cli bundle test-api.yaml --type=json --outfile=test-swagger.json
       # Commit the updated Swagger JSON file back to the repository
       - name: Commit JSON File
         run: |
           git config --global user.name 'Karthika-Manoharan'
           git config --global user.email 'karthika.manoharan@freshworks.com'
-          git add test-api-swagger.json
+          git add test-swagger.json
           git commit -m "Auto-generated Swagger JSON For Test Api"
           git push
